@@ -515,12 +515,27 @@ int simplest_yuv420_border(char *url, int w, int h,int border,int num){
 		//Y
 		for(int j=0;j<h;j++){
 			for(int k=0;k<w;k++){
-				if(k<border||k>(w-border)||j<border||j>(h-border)){
+				if(k<border||k>=(w-border)||j<border||j>=(h-border)){
 					pic[j*w+k]=255;
 					//pic[j*w+k]=0;
 				}
 			}
 		}
+
+		for (int j = 0; j < h/2; j++)
+		{
+			for (int k = 0; k < w/2; k++)
+			{
+				if (k < border / 2 || k >= (w - border) / 2 || j < border / 2 || j >= (h - border) / 2)
+				{
+					// U
+					pic[w * h + j * w / 2 + k] = 0;
+					// V
+					pic[w * h * 5 / 4 + j * w / 2 + k] = 128;
+				}
+			}
+		}
+
 		fwrite(pic,1,w*h*3/2,fp1);
 	}
 
